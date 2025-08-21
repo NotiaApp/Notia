@@ -1,0 +1,6 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/com.vastsea.notia.desktop.in
+data/com.vastsea.notia.metainfo.xml.in
+data/com.vastsea.notia.gschema.xml
+src/window.ui

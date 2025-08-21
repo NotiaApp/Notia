@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=notia
+Exec=notia
+Icon=com.vastsea.notia
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true
