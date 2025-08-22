@@ -13,6 +13,10 @@ use gtk::{gio, glib};
 use gtk::prelude::*;
 
 fn main() -> glib::ExitCode {
+    // Set English as default language
+    std::env::set_var("LANG", "en_US.UTF-8");
+    std::env::set_var("LC_ALL", "en_US.UTF-8");
+    
     // Initialize libadwaita
     adw::init().expect("Failed to initialize libadwaita");
     

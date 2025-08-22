@@ -3,7 +3,7 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
   <template class="NotiaWindow" parent="AdwApplicationWindow">
-    <property name="title" translatable="yes">Notia - Fotoğraf Galerisi</property>
+    <property name="title" translatable="yes">Notia - Photo Gallery</property>
     <property name="default-width">1200</property>
     <property name="default-height">800</property>
     

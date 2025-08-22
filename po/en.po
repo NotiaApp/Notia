@@ -98,6 +98,46 @@ msgstr "_About"
 msgid "_Çıkış"
 msgstr "_Quit"
 
+#: src/sidebar.ui:13
+msgid "Fotoğraf Notları"
+msgstr "Photo Notes"
+
+#: src/sidebar.ui:14
+msgid "Seçili fotoğrafa not ekleyin"
+msgstr "Add notes to selected photo"
+
+#: src/sidebar.ui:35
+msgid "Seçili fotoğraf:"
+msgstr "Selected photo:"
+
+#: src/sidebar.ui:42
+msgid "Seçili Fotoğraf"
+msgstr "Selected Photo"
+
+#: src/sidebar.ui:52
+msgid "Henüz not eklenmemiş"
+msgstr "No note added yet"
+
+#: src/sidebar.ui:75
+msgid "Etiketler"
+msgstr "Tags"
+
+#: src/sidebar.ui:85
+msgid "Etiket ekle..."
+msgstr "Add tag..."
+
+#: src/sidebar.ui:89
+msgid "Ekle"
+msgstr "Add"
+
+#: src/sidebar.ui:97
+msgid "Temizle"
+msgstr "Clear"
+
+#: src/sidebar.ui:102
+msgid "Notu Kaydet"
+msgstr "Save Note"
+
 #: src/window.rs:250
 msgid "No photos available"
 msgstr "No photos available"

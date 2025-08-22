@@ -98,6 +98,46 @@ msgstr "_Hakkında"
 msgid "_Çıkış"
 msgstr "_Çıkış"
 
+#: src/sidebar.ui:13
+msgid "Fotoğraf Notları"
+msgstr "Fotoğraf Notları"
+
+#: src/sidebar.ui:14
+msgid "Seçili fotoğrafa not ekleyin"
+msgstr "Seçili fotoğrafa not ekleyin"
+
+#: src/sidebar.ui:35
+msgid "Seçili fotoğraf:"
+msgstr "Seçili fotoğraf:"
+
+#: src/sidebar.ui:42
+msgid "Seçili Fotoğraf"
+msgstr "Seçili Fotoğraf"
+
+#: src/sidebar.ui:52
+msgid "Henüz not eklenmemiş"
+msgstr "Henüz not eklenmemiş"
+
+#: src/sidebar.ui:75
+msgid "Etiketler"
+msgstr "Etiketler"
+
+#: src/sidebar.ui:85
+msgid "Etiket ekle..."
+msgstr "Etiket ekle..."
+
+#: src/sidebar.ui:89
+msgid "Ekle"
+msgstr "Ekle"
+
+#: src/sidebar.ui:97
+msgid "Temizle"
+msgstr "Temizle"
+
+#: src/sidebar.ui:102
+msgid "Notu Kaydet"
+msgstr "Notu Kaydet"
+
 #: src/window.rs:250
 msgid "No photos available"
 msgstr "Fotoğraf bulunamadı"
