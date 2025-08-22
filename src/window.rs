@@ -132,12 +132,15 @@ impl NotiaWindow {
         ));
         
         // Sidebar toggle
-          imp.sidebar_toggle.connect_active_notify(glib::clone!(
+        imp.sidebar_toggle.connect_active_notify(glib::clone!(
             #[weak(rename_to = window)]
             self,
             move |toggle| {
                 let imp = window.imp();
-                imp.sidebar_revealer.set_reveal_child(toggle.is_active());
+                let active = toggle.is_active();
+                imp.sidebar_revealer.set_reveal_child(active);
+                imp.sidebar_revealer.set_hexpand(active);
+                imp.sidebar_revealer.set_vexpand(active);
             }
         ));
                 

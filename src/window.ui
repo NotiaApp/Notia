@@ -60,8 +60,11 @@
             <property name="content">
               <object class="GtkBox">
                 <property name="orientation">horizontal</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="spacing">0</property>
                 
-                <!-- Ana içerik alanı -->
+                <!-- Ana içerik -->
                 <child>
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
@@ -144,16 +147,15 @@
                   </object>
                 </child>
                 
-                <!-- Kenar Çubuğu (Revealer ile animasyonlu) -->
+                <!-- Kenar Çubuğu -->
                 <child>
                   <object class="GtkRevealer" id="sidebar_revealer">
-                    <property name="transition-type">slide-right</property>
+                    <property name="transition-type">slide-left</property>
                     <property name="transition-duration">300</property>
                     <property name="reveal-child">True</property>
                     <property name="child">
                       <object class="GtkBox">
                         <property name="orientation">vertical</property>
-                        <property name="width-request">350</property>
                         <property name="spacing">12</property>
                         <property name="margin-start">6</property>
                         <property name="margin-end">12</property>
