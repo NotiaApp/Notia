@@ -1,5 +1,8 @@
 # Notia (Open Source GNOME Edition)
 
+![Screenshot](https://github.com/user-attachments/assets/269c4b88-a5e3-4de7-8ec8-e4f20ee23dc5)
+
+
 **Notia** is a free and open-source application for Linux, designed to combine a **photo gallery** with a **note-taking system**.  
 It’s built with **Rust, GTK4 and Libadwaita** to provide a fast, lightweight and GNOME-native experience.
 
