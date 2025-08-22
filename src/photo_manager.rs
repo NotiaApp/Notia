@@ -46,6 +46,8 @@ impl PhotoManager {
             dirs::picture_dir(),
             dirs::home_dir().map(|p| p.join("Pictures")),
             dirs::home_dir().map(|p| p.join("Resimler")),
+            dirs::home_dir().map(|p| p.join("Downloads")),
+            dirs::home_dir().map(|p| p.join("İndirilenler")),
         ];
 
         for dir_opt in picture_dirs {
