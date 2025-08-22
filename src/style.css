@@ -1,19 +1,22 @@
 /* Tag chipleri için stil */
 .tag-chip {
     border-radius: 8px;
-    background-color: #A6BDD7;
+    background-color: #3584e4;
     color: white;
     font-weight: 500;
     min-width: 32px;
     min-height: 24px;
     padding: 2px 8px;
     margin: 2px 2px 2px 0;
+    border: none;
 }
+
 .tag-label {
     color: white;
     font-weight: 500;
     padding-right: 4px;
 }
+
 .tag-delete-btn {
     background: transparent;
     border: none;
@@ -22,4 +25,36 @@
     min-height: 16px;
     margin-left: 2px;
     padding: 0;
+}
+
+/* GNOME renk paleti ile tag chipleri */
+.tag-color-0 { background-color: #3584e4; } /* Blue */
+.tag-color-1 { background-color: #1c71d8; } /* Blue */
+.tag-color-2 { background-color: #33d17a; } /* Green */
+.tag-color-3 { background-color: #2ec27e; } /* Green */
+.tag-color-4 { background-color: #f6d32d; } /* Yellow */
+.tag-color-5 { background-color: #f9f06b; } /* Yellow */
+.tag-color-6 { background-color: #ff7800; } /* Orange */
+.tag-color-7 { background-color: #e66100; } /* Orange */
+.tag-color-8 { background-color: #e01b5c; } /* Red */
+.tag-color-9 { background-color: #c01c28; } /* Red */
+.tag-color-10 { background-color: #9141ac; } /* Purple */
+.tag-color-11 { background-color: #813d9c; } /* Purple */
+.tag-color-12 { background-color: #26a269; } /* Green */
+.tag-color-13 { background-color: #1a5fb4; } /* Blue */
+.tag-color-14 { background-color: #f39d21; } /* Orange */
+.tag-color-15 { background-color: #d64939; } /* Red */
+.tag-color-16 { background-color: #7c3aed; } /* Purple */
+.tag-color-17 { background-color: #059669; } /* Green */
+.tag-color-18 { background-color: #dc2626; } /* Red */
+.tag-color-19 { background-color: #0891b2; } /* Blue */
+
+/* Hover efektleri */
+.tag-chip:hover {
+    opacity: 0.8;
+}
+
+.tag-delete-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
 }

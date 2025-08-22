@@ -181,8 +181,9 @@ impl Sidebar {
         let label = gtk::Label::new(Some(tag));
         label.add_css_class("tag-label");
         
-        // Basit renk seçimi
-        let _color = Self::get_tag_color(tag);
+        // Tag rengini CSS class olarak ekle
+        let color_class = format!("tag-color-{}", Self::get_tag_color_index(tag));
+        chip.add_css_class(&color_class);
         label.set_margin_top(2);
         label.set_margin_bottom(2);
         label.set_margin_start(4);
@@ -230,6 +231,13 @@ impl Sidebar {
         }
     }
 
+    fn get_tag_color_index(tag: &str) -> usize {
+        // Basit hash-based renk seçimi
+        let colors_count = 20;
+        let hash = tag.chars().map(|c| c as u32).sum::<u32>();
+        (hash % colors_count as u32) as usize
+    }
+
     fn get_tag_color(tag: &str) -> String {
         // Basit hash-based renk seçimi
         let colors = [
@@ -238,8 +246,7 @@ impl Sidebar {
             "#F4C800", "#7F180D", "#93AA00", "#593315", "#F13A13", "#232C16"
         ];
         
-        let hash = tag.chars().map(|c| c as u32).sum::<u32>();
-        let index = (hash % colors.len() as u32) as usize;
+        let index = Self::get_tag_color_index(tag);
         colors[index].to_string()
     }
 }
