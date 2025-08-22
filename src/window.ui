@@ -4,8 +4,8 @@
   <requires lib="Adw" version="1.0"/>
   <template class="NotiaWindow" parent="AdwApplicationWindow">
     <property name="title" translatable="yes">Notia - Fotoğraf Galerisi</property>
-    <property name="default-width">1000</property>
-    <property name="default-height">700</property>
+    <property name="default-width">1200</property>
+    <property name="default-height">800</property>
     <property name="content">
       <object class="AdwToolbarView">
         <child type="top">
@@ -17,128 +17,233 @@
               </object>
             </property>
             <child type="end">
+              <object class="GtkButton" id="refresh_button">
+                <property name="icon-name">view-refresh-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Yenile</property>
+                <property name="action-name">app.refresh</property>
+              </object>
+            </child>
+            <child type="end">
               <object class="GtkMenuButton">
                 <property name="primary">True</property>
                 <property name="icon-name">open-menu-symbolic</property>
-                <property name="tooltip-text" translatable="yes">Main Menu</property>
+                <property name="tooltip-text" translatable="yes">Ana Menü</property>
                 <property name="menu-model">primary_menu</property>
+                <style>
+                  <class name="flat"/>
+                </style>
               </object>
             </child>
           </object>
         </child>
         <property name="content">
-          <object class="GtkBox">
-            <property name="orientation">vertical</property>
-            <property name="spacing">12</property>
-            <property name="margin-start">12</property>
-            <property name="margin-end">12</property>
-            <property name="margin-top">12</property>
-            <property name="margin-bottom">12</property>
-
-            <!-- Carousel for photos -->
-            <child>
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
-                <property name="spacing">6</property>
+          <object class="AdwToastOverlay" id="toast_overlay">
+            <property name="child">
+              <object class="AdwPreferencesPage">
+                <!-- Fotoğraf Galerisi Bölümü -->
                 <child>
-                  <object class="GtkLabel" id="photo_label">
-                    <property name="label">Seçili Fotoğraf</property>
-                    <style>
-                      <class name="title-3"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwCarousel" id="carousel">
-                    <property name="height-request">400</property>
-                    <property name="allow-long-swipes">True</property>
-                    <property name="allow-mouse-drag">True</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwCarouselIndicatorDots">
-                    <property name="carousel">carousel</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-
-            <!-- Notes section -->
-            <child>
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
-                <property name="spacing">6</property>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="label">Fotoğraf Notları</property>
-                    <style>
-                      <class name="title-3"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="note_label">
-                    <property name="label">Henüz not eklenmemiş</property>
-                    <style>
-                      <class name="caption"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkScrolledWindow">
-                    <property name="height-request">150</property>
-                    <property name="vexpand">True</property>
-                    <property name="child">
-                      <object class="GtkTextView" id="note_text_view">
-                        <property name="wrap-mode">word</property>
-                        <property name="left-margin">6</property>
-                        <property name="right-margin">6</property>
-                        <property name="top-margin">6</property>
-                        <property name="bottom-margin">6</property>
+                  <object class="AdwPreferencesGroup">
+                    <property name="title" translatable="yes">Fotoğraf Galerisi</property>
+                    <property name="description" translatable="yes">Kaydırarak fotoğraflar arasında geçiş yapın</property>
+                    
+                    <!-- Carousel for photos -->
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">12</property>
+                        <property name="margin-top">12</property>
+                        <property name="margin-bottom">12</property>
+                        
+                        <child>
+                          <object class="AdwCarousel" id="carousel">
+                            <property name="height-request">450</property>
+                            <property name="allow-long-swipes">True</property>
+                            <property name="allow-mouse-drag">True</property>
+                            <property name="spacing">24</property>
+                          </object>
+                        </child>
+                        
+                        <child>
+                          <object class="GtkBox">
+                            <property name="orientation">horizontal</property>
+                            <property name="homogeneous">True</property>
+                            <property name="halign">center</property>
+                            <property name="spacing">12</property>
+                            
+                            <child>
+                              <object class="GtkButton" id="prev_button">
+                                <property name="icon-name">go-previous-symbolic</property>
+                                <property name="tooltip-text" translatable="yes">Önceki Fotoğraf</property>
+                                <property name="halign">start</property>
+                                <style>
+                                  <class name="circular"/>
+                                  <class name="flat"/>
+                                </style>
+                              </object>
+                            </child>
+                            
+                            <child>
+                              <object class="AdwCarouselIndicatorDots">
+                                <property name="carousel">carousel</property>
+                              </object>
+                            </child>
+                            
+                            <child>
+                              <object class="GtkButton" id="next_button">
+                                <property name="icon-name">go-next-symbolic</property>
+                                <property name="tooltip-text" translatable="yes">Sonraki Fotoğraf</property>
+                                <property name="halign">end</property>
+                                <style>
+                                  <class name="circular"/>
+                                  <class name="flat"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        
+                        <child>
+                          <object class="GtkBox">
+                            <property name="orientation">horizontal</property>
+                            <property name="spacing">6</property>
+                            <property name="margin-top">6</property>
+                            <property name="halign">center</property>
+                            
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="label">Şu anki fotoğraf:</property>
+                                <style>
+                                  <class name="caption"/>
+                                  <class name="dim-label"/>
+                                </style>
+                              </object>
+                            </child>
+                            
+                            <child>
+                              <object class="GtkLabel" id="photo_label">
+                                <property name="label">Seçili Fotoğraf</property>
+                                <property name="ellipsize">end</property>
+                                <property name="max-width-chars">30</property>
+                                <style>
+                                  <class name="caption"/>
+                                  <class name="accent"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
                       </object>
-                    </property>
+                    </child>
                   </object>
                 </child>
+                
+                <!-- Notlar Bölümü -->
                 <child>
-                  <object class="GtkButton" id="save_note_button">
-                    <property name="label">Notu Kaydet</property>
-                    <property name="halign">end</property>
-                    <style>
-                      <class name="suggested-action"/>
-                    </style>
+                  <object class="AdwPreferencesGroup">
+                    <property name="title" translatable="yes">Fotoğraf Notları</property>
+                    <property name="description" translatable="yes">Seçili fotoğrafa not ekleyin</property>
+                    
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">12</property>
+                        
+                        <child>
+                          <object class="GtkLabel" id="note_label">
+                            <property name="label">Henüz not eklenmemiş</property>
+                            <property name="halign">start</property>
+                            <style>
+                              <class name="caption"/>
+                              <class name="dim-label"/>
+                            </style>
+                          </object>
+                        </child>
+                        
+                        <child>
+                          <object class="GtkScrolledWindow">
+                            <property name="height-request">200</property>
+                            <property name="vexpand">True</property>
+                            <property name="child">
+                              <object class="GtkTextView" id="note_text_view">
+                                <property name="wrap-mode">word</property>
+                                <property name="left-margin">12</property>
+                                <property name="right-margin">12</property>
+                                <property name="top-margin">12</property>
+                                <property name="bottom-margin">12</property>
+                                <property name="css-classes">card</property>
+                              </object>
+                            </property>
+                          </object>
+                        </child>
+                        
+                        <child>
+                          <object class="GtkBox">
+                            <property name="orientation">horizontal</property>
+                            <property name="spacing">6</property>
+                            <property name="halign">end</property>
+                            <property name="homogeneous">True</property>
+                            
+                            <child>
+                              <object class="GtkButton" id="clear_note_button">
+                                <property name="label">Temizle</property>
+                                <property name="halign">start</property>
+                                <style>
+                                  <class name="destructive-action"/>
+                                </style>
+                              </object>
+                            </child>
+                            
+                            <child>
+                              <object class="GtkButton" id="save_note_button">
+                                <property name="label">Notu Kaydet</property>
+                                <property name="halign">end</property>
+                                <style>
+                                  <class name="suggested-action"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
-            </child>
+            </property>
           </object>
         </property>
       </object>
     </property>
   </template>
-
+  
   <menu id="primary_menu">
     <section>
       <item>
         <attribute name="label" translatable="yes">_Yenile</attribute>
         <attribute name="action">app.refresh</attribute>
+        <attribute name="icon">view-refresh-symbolic</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">_Tüm Notları Temizle</attribute>
         <attribute name="action">app.clear_notes</attribute>
+        <attribute name="icon">edit-clear-symbolic</attribute>
       </item>
     </section>
     <section>
       <item>
         <attribute name="label" translatable="yes">_Klavye Kısayolları</attribute>
         <attribute name="action">win.show-help-overlay</attribute>
+        <attribute name="icon">keyboard-shortcuts-symbolic</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">_Hakkında</attribute>
         <attribute name="action">app.about</attribute>
+        <attribute name="icon">help-about-symbolic</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">_Çıkış</attribute>
         <attribute name="action">app.quit</attribute>
+        <attribute name="icon">application-exit-symbolic</attribute>
       </item>
     </section>
   </menu>
