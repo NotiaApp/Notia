@@ -1,0 +1,66 @@
+/* notia.css */
+.notia-window {
+    background-color: @window_bg_color;
+}
+
+.sidebar {
+    background-color: @sidebar_bg_color;
+    border-left: 1px solid @borders;
+    border-radius: 8px 0 0 8px;
+}
+
+.photo-grid {
+    padding: 6px;
+}
+
+.photo-grid > child {
+    padding: 3px;
+}
+
+.photo-grid > child > * {
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 200ms ease;
+}
+
+.photo-grid > child > *:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.photo-preview-frame {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.photo-preview {
+    border-radius: 10px;
+}
+
+.photo-name {
+    font-weight: 500;
+}
+
+.note-status {
+    font-weight: 500;
+}
+
+.note-text {
+    border-radius: 12px;
+    background-color: @view_bg_color;
+}
+
+.nav-button {
+    padding: 8px;
+    min-width: 36px;
+    min-height: 36px;
+}
+
+.counter-label {
+    font-weight: 500;
+    font-size: 0.9em;
+}
+
+.pill {
+    border-radius: 999px;
+    padding: 6px 16px;
+}
