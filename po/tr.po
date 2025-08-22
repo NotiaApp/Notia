@@ -19,89 +19,113 @@ msgstr ""
 
 #: data/com.vastsea.notia.desktop.in:2 data/com.vastsea.notia.metainfo.xml.in:7
 msgid "Notia"
-msgstr ""
+msgstr "Notia"
 
 #: data/com.vastsea.notia.desktop.in:8
 msgid "GTK;"
-msgstr ""
+msgstr "GTK;"
 
 #: data/com.vastsea.notia.metainfo.xml.in:8
 msgid "Keep the summary shorter, between 10 and 35 characters"
-msgstr ""
+msgstr "Özeti daha kısa tutun, 10 ile 35 karakter arasında"
 
 #: data/com.vastsea.notia.metainfo.xml.in:10
 msgid "No description"
-msgstr ""
+msgstr "Açıklama yok"
 
 #: data/com.vastsea.notia.metainfo.xml.in:14
 msgid "Developer name"
-msgstr ""
+msgstr "Geliştirici adı"
 
 #: data/com.vastsea.notia.metainfo.xml.in:52
 #: data/com.vastsea.notia.metainfo.xml.in:56
 msgid "A caption"
-msgstr ""
+msgstr "Bir başlık"
 
 #: src/application.rs:101
 msgid "translator-credits"
-msgstr ""
+msgstr "Çeviri ekibi"
 
 #: src/window.ui:6
 msgid "Notia - Fotoğraf Galerisi"
-msgstr ""
+msgstr "Notia - Fotoğraf Galerisi"
 
 #: src/window.ui:27
 msgid "Kenar Çubuğunu Göster/Gizle"
-msgstr ""
+msgstr "Kenar Çubuğunu Göster/Gizle"
 
 #: src/window.ui:38
 msgid "Yenile"
-msgstr ""
+msgstr "Yenile"
 
 #: src/window.ui:50
 msgid "Ana Menü"
-msgstr ""
+msgstr "Ana Menü"
 
 #: src/window.ui:82
 msgid "Fotoğraf Galerisi"
-msgstr ""
+msgstr "Fotoğraf Galerisi"
 
 #: src/window.ui:83
 msgid "Fotoğrafları görüntülemek için tıklayın"
-msgstr ""
+msgstr "Fotoğrafları görüntülemek için tıklayın"
 
 #: src/window.ui:116
 msgid "Önceki Fotoğraf"
-msgstr ""
+msgstr "Önceki Fotoğraf"
 
 #: src/window.ui:138
 msgid "Sonraki Fotoğraf"
-msgstr ""
+msgstr "Sonraki Fotoğraf"
 
 #: src/window.ui:169
 msgid "_Yenile"
-msgstr ""
+msgstr "_Yenile"
 
 #: src/window.ui:174
 msgid "_Tüm Notları Temizle"
-msgstr ""
+msgstr "_Tüm Notları Temizle"
 
 #: src/window.ui:181
 msgid "_Klavye Kısayolları"
-msgstr ""
+msgstr "_Klavye Kısayolları"
 
 #: src/window.ui:186
 msgid "_Hakkında"
-msgstr ""
+msgstr "_Hakkında"
 
 #: src/window.ui:191
 msgid "_Çıkış"
-msgstr ""
+msgstr "_Çıkış"
 
-#: src/sidebar.ui:13
-msgid "Fotoğraf Notları"
-msgstr ""
+#: src/window.rs:250
+msgid "No photos available"
+msgstr "Fotoğraf bulunamadı"
 
-#: src/sidebar.ui:14
-msgid "Seçili fotoğrafa not ekleyin"
-msgstr ""
+#: src/window.rs:252
+msgid "No photos to add notes to"
+msgstr "Not eklemek için fotoğraf yok"
+
+#: src/window.rs:260
+msgid "Unknown File"
+msgstr "Bilinmeyen Dosya"
+
+#: src/window.rs:268
+msgid "Note"
+msgstr "Not"
+
+#: src/window.rs:270
+msgid "No note added yet"
+msgstr "Henüz not eklenmedi"
+
+#: src/window.rs:285
+msgid "Note saved successfully"
+msgstr "Not başarıyla kaydedildi"
+
+#: src/window.rs:310
+msgid "Note cleared"
+msgstr "Not temizlendi"
+
+#: src/window.rs:325
+msgid "All notes cleared"
+msgstr "Tüm notlar temizlendi"
