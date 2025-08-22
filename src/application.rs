@@ -95,7 +95,7 @@ impl NotiaApplication {
         let about = adw::AboutDialog::builder()
             .application_name("Notia")
             .application_icon("com.vastsea.notia")
-            .developer_name("Notia Team")
+            .developer_name("Egehan KAHRAMAN")
             .version(VERSION)
             .developers(vec!["Notia Team"])
             .translator_credits(&gettext("translator-credits"))
