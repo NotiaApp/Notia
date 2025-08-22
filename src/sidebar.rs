@@ -1,12 +1,16 @@
 use gtk::prelude::*;
 use gtk::subclass::prelude::*;
 use gtk::{glib, CompositeTemplate};
+use std::cell::RefCell;
+use std::rc::Rc;
+use crate::photo_manager::PhotoManager;
 
 pub struct SidebarData {
     pub photo_path: Option<String>,
     pub photo_name: Option<String>,
     pub note_text: Option<String>,
     pub note_status: Option<String>,
+    pub tags: Option<Vec<String>>,
 }
 
 mod imp {
@@ -33,6 +37,9 @@ mod imp {
         pub tag_entry: TemplateChild<gtk::Entry>,
         #[template_child]
         pub add_tag_button: TemplateChild<gtk::Button>,
+        
+        pub photo_manager: RefCell<Option<Rc<RefCell<PhotoManager>>>>,
+        pub current_photo_path: RefCell<Option<String>>,
     }
 
     #[glib::object_subclass]
@@ -81,6 +88,19 @@ impl Sidebar {
             let file = gio::File::for_path(photo_path);
             imp.selected_photo_preview.set_file(Some(&file));
         }
+        
+        // Etiketleri güncelle
+        if let Some(tags) = data.tags {
+            // Mevcut etiketleri temizle
+            while let Some(child) = imp.tag_chip_box.first_child() {
+                imp.tag_chip_box.remove(&child);
+            }
+            
+            // Yeni etiketleri ekle
+            for tag in tags {
+                self.add_tag_chip(&tag);
+            }
+        }
     }
 
     pub fn get_note_text(&self) -> String {
@@ -112,7 +132,6 @@ impl Sidebar {
 
     pub fn setup_tag_feature(&self) {
         let imp = self.imp();
-        let tag_box = imp.tag_chip_box.clone();
         let entry = imp.tag_entry.clone();
         let add_btn = imp.add_tag_button.clone();
         let sidebar = self.clone();
@@ -146,13 +165,40 @@ impl Sidebar {
         del_btn.set_focusable(false);
         
         let chip_clone = chip.clone();
+        let sidebar = self.clone();
+        let tag_str = tag.to_string();
         del_btn.connect_clicked(move |_| {
             chip_clone.unparent();
+            // Etiketi PhotoManager'dan da sil
+            sidebar.remove_tag_from_manager(&tag_str);
         });
         
         chip.append(&label);
         chip.append(&del_btn);
         imp.tag_chip_box.append(&chip);
+        
+        // Etiketi PhotoManager'a ekle
+        self.add_tag_to_manager(tag);
+    }
+
+    fn add_tag_to_manager(&self, tag: &str) {
+        let imp = self.imp();
+        if let Some(manager) = imp.photo_manager.borrow().as_ref() {
+            if let Some(photo_path) = imp.current_photo_path.borrow().as_ref() {
+                let mut manager = manager.borrow_mut();
+                manager.add_tag(photo_path, tag.to_string());
+            }
+        }
+    }
+
+    fn remove_tag_from_manager(&self, tag: &str) {
+        let imp = self.imp();
+        if let Some(manager) = imp.photo_manager.borrow().as_ref() {
+            if let Some(photo_path) = imp.current_photo_path.borrow().as_ref() {
+                let mut manager = manager.borrow_mut();
+                manager.remove_tag(photo_path, tag);
+            }
+        }
     }
 
     fn get_tag_color(tag: &str) -> String {

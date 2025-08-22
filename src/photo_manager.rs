@@ -9,6 +9,7 @@ pub struct PhotoNote {
     pub path: String,
     pub note: String,
     pub timestamp: String,
+    pub tags: Vec<String>,
 }
 
 #[derive(Debug)]
@@ -103,9 +104,44 @@ impl PhotoManager {
             path: photo_path.to_string(),
             note,
             timestamp: chrono::Utc::now().to_rfc3339(),
+            tags: Vec::new(),
         };
         self.notes.insert(photo_path.to_string(), photo_note);
         self.save_notes();
+    }
+
+    pub fn add_tag(&mut self, photo_path: &str, tag: String) {
+        if let Some(photo_note) = self.notes.get_mut(photo_path) {
+            if !photo_note.tags.contains(&tag) {
+                photo_note.tags.push(tag);
+                self.save_notes();
+            }
+        } else {
+            // Eğer not yoksa, boş not ile birlikte etiket ekle
+            let photo_note = PhotoNote {
+                path: photo_path.to_string(),
+                note: String::new(),
+                timestamp: chrono::Utc::now().to_rfc3339(),
+                tags: vec![tag],
+            };
+            self.notes.insert(photo_path.to_string(), photo_note);
+            self.save_notes();
+        }
+    }
+
+    pub fn remove_tag(&mut self, photo_path: &str, tag: &str) {
+        if let Some(photo_note) = self.notes.get_mut(photo_path) {
+            photo_note.tags.retain(|t| t != tag);
+            self.save_notes();
+        }
+    }
+
+    pub fn get_tags(&self, photo_path: &str) -> Vec<String> {
+        if let Some(photo_note) = self.notes.get(photo_path) {
+            photo_note.tags.clone()
+        } else {
+            Vec::new()
+        }
     }
 
     pub fn get_note(&self, photo_path: &str) -> Option<&PhotoNote> {

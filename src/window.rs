@@ -268,6 +268,7 @@ impl NotiaWindow {
                     photo_name: Some("No photos available".to_string()),
                     note_text: Some("".to_string()),
                     note_status: Some("No photos to add notes to".to_string()),
+                    tags: None,
                 });
             }
             return;
@@ -300,11 +301,17 @@ impl NotiaWindow {
         
         // Update sidebar with photo data
         if let Some(sidebar) = imp.sidebar.borrow().as_ref() {
+            let tags = {
+                let manager = imp.photo_manager.borrow();
+                manager.get_tags(&photo_path)
+            };
+            
             sidebar.update_sidebar(crate::sidebar::SidebarData {
                 photo_path: Some(photo_path.clone()),
                 photo_name: Some(photo_name.clone()),
                 note_text: Some(note_text.clone()),
                 note_status: Some(note_status.clone()),
+                tags: Some(tags),
             });
         }
         
