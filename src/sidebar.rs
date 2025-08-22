@@ -3,6 +3,7 @@ use gtk::subclass::prelude::*;
 use gtk::{glib, CompositeTemplate};
 use std::cell::RefCell;
 use std::rc::Rc;
+use gettextrs::gettext;
 use crate::photo_manager::PhotoManager;
 
 pub struct SidebarData {
