@@ -115,7 +115,7 @@ impl PhotoManager {
         self.save_notes();
     }
 
-
+  }
 
     pub fn clear_notes(&mut self) {
         self.notes.clear();
