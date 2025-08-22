@@ -101,6 +101,18 @@ impl NotiaWindow {
         // Initialize sidebar
         let sidebar = Sidebar::new();
         sidebar.setup_tag_feature();
+        
+        // Connect sidebar callbacks
+        let window = self.clone();
+        sidebar.connect_save_note(move || {
+            window.save_current_note();
+        });
+        
+        let window = self.clone();
+        sidebar.connect_clear_note(move || {
+            window.clear_current_note();
+        });
+        
         imp.sidebar_revealer.set_child(Some(&sidebar));
         *imp.sidebar.borrow_mut() = Some(sidebar.clone());
         
@@ -248,10 +260,16 @@ impl NotiaWindow {
         let count = imp.gallery_model.borrow().n_items();
         
         if count == 0 {
-            // imp.photo_label.set_text("No photos available");
-            // imp.note_label.set_text("No photos to add notes to");
             imp.photo_counter.set_text("0 / 0");
-            // imp.selected_photo_preview.set_paintable(None::<&gtk::gdk::Paintable>);
+            // Update sidebar with empty data
+            if let Some(sidebar) = imp.sidebar.borrow().as_ref() {
+                sidebar.update_sidebar(crate::sidebar::SidebarData {
+                    photo_path: None,
+                    photo_name: Some("No photos available".to_string()),
+                    note_text: Some("".to_string()),
+                    note_status: Some("No photos to add notes to".to_string()),
+                });
+            }
             return;
         }
         
@@ -262,9 +280,6 @@ impl NotiaWindow {
         
         // Update photo counter
         imp.photo_counter.set_text(&format!("{} / {}", current_index + 1, count));
-        
-        // Update photo preview
-        // imp.selected_photo_preview.set_file(Some(&file));
         
         // Get photo name
         let photo_name = std::path::Path::new(&photo_path)
@@ -283,12 +298,15 @@ impl NotiaWindow {
             }
         };
         
-        // Update UI
-        // imp.photo_label.set_text(&photo_name);
-        // imp.note_label.set_text(&note_status);
-        
-        // let buffer = imp.note_text_view.buffer();
-        // buffer.set_text(&note_text);
+        // Update sidebar with photo data
+        if let Some(sidebar) = imp.sidebar.borrow().as_ref() {
+            sidebar.update_sidebar(crate::sidebar::SidebarData {
+                photo_path: Some(photo_path.clone()),
+                photo_name: Some(photo_name.clone()),
+                note_text: Some(note_text.clone()),
+                note_status: Some(note_status.clone()),
+            });
+        }
         
         // Update navigation button states
         imp.prev_button.set_sensitive(current_index > 0);
@@ -309,16 +327,16 @@ impl NotiaWindow {
             .and_downcast::<gio::File>().unwrap();
         let photo_path = file.path().unwrap_or_default().to_string_lossy().to_string();
         
-        // Get note text
-        // let buffer = imp.note_text_view.buffer();
-        // let (start, end) = buffer.bounds();
-        // let note_text = buffer.text(&start, &end, false);
-        
-        // Save note
-        // if !note_text.trim().is_empty() {
-        //     let mut manager = imp.photo_manager.borrow_mut();
-        //     manager.add_note(&photo_path, note_text.to_string());
-        // }
+        // Get note text from sidebar
+        if let Some(sidebar) = imp.sidebar.borrow().as_ref() {
+            let note_text = sidebar.get_note_text();
+            
+            // Save note
+            if !note_text.trim().is_empty() {
+                let mut manager = imp.photo_manager.borrow_mut();
+                manager.add_note(&photo_path, note_text.to_string());
+            }
+        }
         
         // Update UI
         self.update_current_photo();
@@ -348,9 +366,10 @@ impl NotiaWindow {
             manager.remove_note(&photo_path);
         } // borrow burada biter
         
-        // Clear text view
-        // let buffer = imp.note_text_view.buffer();
-        // buffer.set_text("");
+        // Clear text view in sidebar
+        if let Some(sidebar) = imp.sidebar.borrow().as_ref() {
+            sidebar.clear_note_text();
+        }
         
         // Update UI
         self.update_current_photo();
