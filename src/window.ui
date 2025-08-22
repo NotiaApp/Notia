@@ -39,119 +39,75 @@
         <property name="content">
           <object class="AdwToastOverlay" id="toast_overlay">
             <property name="child">
-              <object class="AdwPreferencesPage">
-                <!-- Fotoğraf Galerisi Bölümü -->
+              <object class="GtkPaned" id="main_paned">
+                <property name="orientation">horizontal</property>
+                <property name="wide-handle">True</property>
+                <property name="position">800</property>
+                <property name="resize-start-child">True</property>
+                <property name="shrink-start-child">False</property>
+                <property name="resize-end-child">True</property>
+                <property name="shrink-end-child">True</property>
+
+                <!-- Gallery Section (Left Pane) -->
                 <child>
-                  <object class="AdwPreferencesGroup">
-                    <property name="title" translatable="yes">Fotoğraf Galerisi</property>
-                    <property name="description" translatable="yes">Kaydırarak fotoğraflar arasında geçiş yapın</property>
-                    
-                    <!-- Carousel for photos -->
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-top">12</property>
+                    <property name="margin-bottom">12</property>
+
+                    <!-- Gallery Header -->
                     <child>
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">12</property>
-                        <property name="margin-top">12</property>
-                        <property name="margin-bottom">12</property>
-                        
-                        <child>
-                          <object class="AdwCarousel" id="carousel">
-                            <property name="height-request">450</property>
-                            <property name="allow-long-swipes">True</property>
-                            <property name="allow-mouse-drag">True</property>
-                            <property name="spacing">24</property>
-                          </object>
-                        </child>
-                        
-                        <child>
-                          <object class="GtkBox">
-                            <property name="orientation">horizontal</property>
-                            <property name="homogeneous">True</property>
-                            <property name="halign">center</property>
-                            <property name="spacing">12</property>
-                            
-                            <child>
-                              <object class="GtkButton" id="prev_button">
-                                <property name="icon-name">go-previous-symbolic</property>
-                                <property name="tooltip-text" translatable="yes">Önceki Fotoğraf</property>
-                                <property name="halign">start</property>
-                                <style>
-                                  <class name="circular"/>
-                                  <class name="flat"/>
-                                </style>
-                              </object>
-                            </child>
-                            
-                            <child>
-                              <object class="AdwCarouselIndicatorDots">
-                                <property name="carousel">carousel</property>
-                              </object>
-                            </child>
-                            
-                            <child>
-                              <object class="GtkButton" id="next_button">
-                                <property name="icon-name">go-next-symbolic</property>
-                                <property name="tooltip-text" translatable="yes">Sonraki Fotoğraf</property>
-                                <property name="halign">end</property>
-                                <style>
-                                  <class name="circular"/>
-                                  <class name="flat"/>
-                                </style>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        
-                        <child>
-                          <object class="GtkBox">
-                            <property name="orientation">horizontal</property>
-                            <property name="spacing">6</property>
-                            <property name="margin-top">6</property>
-                            <property name="halign">center</property>
-                            
-                            <child>
-                              <object class="GtkLabel">
-                                <property name="label">Şu anki fotoğraf:</property>
-                                <style>
-                                  <class name="caption"/>
-                                  <class name="dim-label"/>
-                                </style>
-                              </object>
-                            </child>
-                            
-                            <child>
-                              <object class="GtkLabel" id="photo_label">
-                                <property name="label">Seçili Fotoğraf</property>
-                                <property name="ellipsize">end</property>
-                                <property name="max-width-chars">30</property>
-                                <style>
-                                  <class name="caption"/>
-                                  <class name="accent"/>
-                                </style>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
+                      <object class="AdwPreferencesGroup">
+                        <property name="title" translatable="yes">Fotoğraf Galerisi</property>
+                        <property name="description" translatable="yes">Fotoğrafları görüntülemek için tıklayın</property>
                       </object>
                     </child>
-                  </object>
-                </child>
-                
-                <!-- Notlar Bölümü -->
-                <child>
-                  <object class="AdwPreferencesGroup">
-                    <property name="title" translatable="yes">Fotoğraf Notları</property>
-                    <property name="description" translatable="yes">Seçili fotoğrafa not ekleyin</property>
                     
+                    <!-- Gallery Grid -->
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="hscrollbar-policy">never</property>
+                        <property name="child">
+                          <object class="GtkGridView" id="gallery_grid">
+                            <property name="vexpand">True</property>
+                            <property name="max-columns">4</property>
+                            <property name="min-columns">2</property>
+                            <property name="single-click-activate">True</property>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+
+                    <!-- Gallery Navigation -->
                     <child>
                       <object class="GtkBox">
-                        <property name="orientation">vertical</property>
+                        <property name="orientation">horizontal</property>
+                        <property name="homogeneous">True</property>
+                        <property name="halign">center</property>
                         <property name="spacing">12</property>
+                        <property name="margin-top">12</property>
                         
                         <child>
-                          <object class="GtkLabel" id="note_label">
-                            <property name="label">Henüz not eklenmemiş</property>
+                          <object class="GtkButton" id="prev_button">
+                            <property name="icon-name">go-previous-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Önceki Fotoğraf</property>
                             <property name="halign">start</property>
+                            <style>
+                              <class name="circular"/>
+                              <class name="flat"/>
+                            </style>
+                          </object>
+                        </child>
+                        
+                        <child>
+                          <object class="GtkLabel" id="photo_counter">
+                            <property name="label">1 / 10</property>
+                            <property name="halign">center</property>
                             <style>
                               <class name="caption"/>
                               <class name="dim-label"/>
@@ -160,48 +116,142 @@
                         </child>
                         
                         <child>
-                          <object class="GtkScrolledWindow">
+                          <object class="GtkButton" id="next_button">
+                            <property name="icon-name">go-next-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Sonraki Fotoğraf</property>
+                            <property name="halign">end</property>
+                            <style>
+                              <class name="circular"/>
+                              <class name="flat"/>
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                
+                <!-- Note Sidebar (Right Pane) -->
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="width-request">350</property>
+                    <property name="spacing">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-top">12</property>
+                    <property name="margin-bottom">12</property>
+
+                    <!-- Sidebar Header -->
+                    <child>
+                      <object class="AdwPreferencesGroup">
+                        <property name="title" translatable="yes">Fotoğraf Notları</property>
+                        <property name="description" translatable="yes">Seçili fotoğrafa not ekleyin</property>
+                      </object>
+                    </child>
+
+                    <!-- Selected Photo Preview -->
+                    <child>
+                      <object class="GtkFrame">
+                        <property name="margin-bottom">12</property>
+                        <property name="child">
+                          <object class="GtkPicture" id="selected_photo_preview">
                             <property name="height-request">200</property>
-                            <property name="vexpand">True</property>
-                            <property name="child">
-                              <object class="GtkTextView" id="note_text_view">
-                                <property name="wrap-mode">word</property>
-                                <property name="left-margin">12</property>
-                                <property name="right-margin">12</property>
-                                <property name="top-margin">12</property>
-                                <property name="bottom-margin">12</property>
-                                <property name="css-classes">card</property>
-                              </object>
-                            </property>
+                            <property name="content-fit">contain</property>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                    
+                    <!-- Photo Info -->
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">horizontal</property>
+                        <property name="spacing">6</property>
+                        <property name="margin-bottom">12</property>
+                        
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label">Seçili fotoğraf:</property>
+                            <style>
+                              <class name="caption"/>
+                              <class name="dim-label"/>
+                            </style>
                           </object>
                         </child>
                         
                         <child>
-                          <object class="GtkBox">
-                            <property name="orientation">horizontal</property>
-                            <property name="spacing">6</property>
+                          <object class="GtkLabel" id="photo_label">
+                            <property name="label">Seçili Fotoğraf</property>
+                            <property name="ellipsize">end</property>
+                            <property name="hexpand">True</property>
+                            <property name="max-width-chars">25</property>
+                            <style>
+                              <class name="caption"/>
+                              <class name="accent"/>
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+
+                    <!-- Note Status -->
+                    <child>
+                      <object class="GtkLabel" id="note_label">
+                        <property name="label">Henüz not eklenmemiş</property>
+                        <property name="halign">start</property>
+                        <property name="margin-bottom">6</property>
+                        <style>
+                          <class name="caption"/>
+                          <class name="dim-label"/>
+                        </style>
+                      </object>
+                    </child>
+
+                    <!-- Note Text Area -->
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="height-request">250</property>
+                        <property name="vexpand">True</property>
+                        <property name="child">
+                          <object class="GtkTextView" id="note_text_view">
+                            <property name="wrap-mode">word</property>
+                            <property name="left-margin">12</property>
+                            <property name="right-margin">12</property>
+                            <property name="top-margin">12</property>
+                            <property name="bottom-margin">12</property>
+                            <property name="css-classes">card</property>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+
+                    <!-- Note Action Buttons -->
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">horizontal</property>
+                        <property name="spacing">6</property>
+                        <property name="halign">end</property>
+                        <property name="homogeneous">True</property>
+                        <property name="margin-top">12</property>
+
+                        <child>
+                          <object class="GtkButton" id="clear_note_button">
+                            <property name="label">Temizle</property>
+                            <property name="halign">start</property>
+                            <style>
+                              <class name="destructive-action"/>
+                            </style>
+                          </object>
+                        </child>
+                        
+                        <child>
+                          <object class="GtkButton" id="save_note_button">
+                            <property name="label">Notu Kaydet</property>
                             <property name="halign">end</property>
-                            <property name="homogeneous">True</property>
-                            
-                            <child>
-                              <object class="GtkButton" id="clear_note_button">
-                                <property name="label">Temizle</property>
-                                <property name="halign">start</property>
-                                <style>
-                                  <class name="destructive-action"/>
-                                </style>
-                              </object>
-                            </child>
-                            
-                            <child>
-                              <object class="GtkButton" id="save_note_button">
-                                <property name="label">Notu Kaydet</property>
-                                <property name="halign">end</property>
-                                <style>
-                                  <class name="suggested-action"/>
-                                </style>
-                              </object>
-                            </child>
+                            <style>
+                              <class name="suggested-action"/>
+                            </style>
                           </object>
                         </child>
                       </object>

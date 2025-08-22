@@ -100,7 +100,7 @@ impl NotiaApplication {
             .developers(vec!["Notia Team"])
             .translator_credits(&gettext("translator-credits"))
             .copyright("© 2025 Notia Team")
-            .website("https://github.com/yourusername/notia")
+            .website("https://github.com/NotiaApp/Notia")
             .build();
         about.present(Some(&window));
     }
