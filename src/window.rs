@@ -12,56 +12,61 @@ mod imp {
     #[derive(Debug, gtk::CompositeTemplate)]
     #[template(resource = "/com/vastsea/notia/window.ui")]
     pub struct NotiaWindow {
-        // Template widgets - updated to match the UI template
+        // Template widgets - reordered to match the UI template
+        #[template_child]
+        pub toast_overlay: TemplateChild<adw::ToastOverlay>,
+        #[template_child]
+        pub sidebar_toggle: TemplateChild<gtk::ToggleButton>,
         #[template_child]
         pub gallery_grid: TemplateChild<gtk::GridView>,
         #[template_child]
-        pub note_text_view: TemplateChild<gtk::TextView>,
+        pub prev_button: TemplateChild<gtk::Button>,
         #[template_child]
-        pub save_note_button: TemplateChild<gtk::Button>,
+        pub photo_counter: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub next_button: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub selected_photo_preview: TemplateChild<gtk::Picture>,
         #[template_child]
         pub photo_label: TemplateChild<gtk::Label>,
         #[template_child]
         pub note_label: TemplateChild<gtk::Label>,
         #[template_child]
-        pub selected_photo_preview: TemplateChild<gtk::Picture>,
-        #[template_child]
-        pub photo_counter: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub prev_button: TemplateChild<gtk::Button>,
-        #[template_child]
-        pub next_button: TemplateChild<gtk::Button>,
+        pub note_text_view: TemplateChild<gtk::TextView>,
         #[template_child]
         pub clear_note_button: TemplateChild<gtk::Button>,
         #[template_child]
-        pub toast_overlay: TemplateChild<adw::ToastOverlay>,
+        pub save_note_button: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub sidebar_revealer: TemplateChild<gtk::Revealer>,
         
         pub photo_manager: Rc<RefCell<PhotoManager>>,
         pub current_photo_index: RefCell<usize>,
         pub gallery_model: RefCell<gio::ListStore>,
     }
 
-    impl Default for NotiaWindow {
+     impl Default for NotiaWindow {
         fn default() -> Self {
             Self {
+                toast_overlay: TemplateChild::default(),
+                sidebar_toggle: TemplateChild::default(),
                 gallery_grid: TemplateChild::default(),
-                note_text_view: TemplateChild::default(),
-                save_note_button: TemplateChild::default(),
+                prev_button: TemplateChild::default(),
+                photo_counter: TemplateChild::default(),
+                next_button: TemplateChild::default(),
+                selected_photo_preview: TemplateChild::default(),
                 photo_label: TemplateChild::default(),
                 note_label: TemplateChild::default(),
-                selected_photo_preview: TemplateChild::default(),
-                photo_counter: TemplateChild::default(),
-                prev_button: TemplateChild::default(),
-                next_button: TemplateChild::default(),
+                note_text_view: TemplateChild::default(),
                 clear_note_button: TemplateChild::default(),
-                toast_overlay: TemplateChild::default(),
+                save_note_button: TemplateChild::default(),
+                sidebar_revealer: TemplateChild::default(),
                 photo_manager: Rc::new(RefCell::new(PhotoManager::new())),
                 current_photo_index: RefCell::new(0),
                 gallery_model: RefCell::new(gio::ListStore::new::<gio::File>()),
             }
         }
     }
-
     #[glib::object_subclass]
     impl ObjectSubclass for NotiaWindow {
         const NAME: &'static str = "NotiaWindow";
@@ -126,6 +131,16 @@ impl NotiaWindow {
             }
         ));
         
+        // Sidebar toggle
+          imp.sidebar_toggle.connect_active_notify(glib::clone!(
+            #[weak(rename_to = window)]
+            self,
+            move |toggle| {
+                let imp = window.imp();
+                imp.sidebar_revealer.set_reveal_child(toggle.is_active());
+            }
+        ));
+                
         imp.next_button.connect_clicked(glib::clone!(
             #[weak(rename_to = window)]
             self,
