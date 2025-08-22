@@ -21,6 +21,10 @@ It’s built with **Rust, GTK4 and Libadwaita** to provide a fast, lightweight a
 ## 📦 Installation
 > Work in progress — Flatpak build planned.
 
+## 🚀 Build
+
+I will add the deatils on this page soon :)
+
 ## 🤝 Contributing
 Contributions, issues and feature requests are welcome!  
 See the [issues](../../issues) page.
