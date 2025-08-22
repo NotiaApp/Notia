@@ -352,8 +352,10 @@ impl NotiaWindow {
         let photo_path = file.path().unwrap_or_default().to_string_lossy().to_string();
         
         // Clear note
-        let mut manager = imp.photo_manager.borrow_mut();
-        manager.remove_note(&photo_path);
+        {
+            let mut manager = imp.photo_manager.borrow_mut();
+            manager.remove_note(&photo_path);
+        } // borrow burada biter
         
         // Clear text view
         let buffer = imp.note_text_view.buffer();
