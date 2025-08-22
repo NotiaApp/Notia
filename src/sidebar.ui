@@ -88,6 +88,35 @@
             </property>
           </object>
         </child>
+        <!-- Tag Alanı -->
+        <child>
+          <object class="GtkBox" id="tag_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
+            <child>
+              <object class="GtkBox" id="tag_chip_box">
+                <property name="orientation">horizontal</property>
+                <property name="spacing">4</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">horizontal</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkEntry" id="tag_entry">
+                    <property name="placeholder-text">Etiket ekle...</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="add_tag_button">
+                    <property name="label">Ekle</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
         <!-- Not Eylem Düğmeleri -->
         <child>
           <object class="GtkBox">
