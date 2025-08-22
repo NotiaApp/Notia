@@ -102,6 +102,9 @@ impl NotiaWindow {
         let sidebar = Sidebar::new();
         sidebar.setup_tag_feature();
         
+        // Set photo manager and current photo path
+        sidebar.set_photo_manager(imp.photo_manager.clone());
+        
         // Connect sidebar callbacks
         let window = self.clone();
         sidebar.connect_save_note(move || {
@@ -306,6 +309,9 @@ impl NotiaWindow {
                 manager.get_tags(&photo_path)
             };
             
+            // Set current photo path for tag operations
+            sidebar.set_current_photo_path(photo_path.clone());
+            
             sidebar.update_sidebar(crate::sidebar::SidebarData {
                 photo_path: Some(photo_path.clone()),
                 photo_name: Some(photo_name.clone()),
@@ -338,15 +344,24 @@ impl NotiaWindow {
         if let Some(sidebar) = imp.sidebar.borrow().as_ref() {
             let note_text = sidebar.get_note_text();
             
-            // Save note
+            // Save note while preserving existing tags
             if !note_text.trim().is_empty() {
                 let mut manager = imp.photo_manager.borrow_mut();
-                manager.add_note(&photo_path, note_text.to_string());
+                
+                // Get current tags from sidebar (including newly added ones)
+                let current_tags = sidebar.get_current_tags();
+                
+                // Create new note with current tags
+                let photo_note = crate::photo_manager::PhotoNote {
+                    path: photo_path.clone(),
+                    note: note_text.to_string(),
+                    timestamp: chrono::Utc::now().to_rfc3339(),
+                    tags: current_tags,
+                };
+                manager.notes.insert(photo_path, photo_note);
+                manager.save_notes();
             }
         }
-        
-        // Update UI
-        self.update_current_photo();
         
         // Show toast
         let toast = adw::Toast::new("Note saved successfully");

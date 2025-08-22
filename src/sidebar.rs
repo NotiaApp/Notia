@@ -144,6 +144,35 @@ impl Sidebar {
         });
     }
 
+    pub fn set_photo_manager(&self, manager: Rc<RefCell<PhotoManager>>) {
+        let imp = self.imp();
+        *imp.photo_manager.borrow_mut() = Some(manager);
+    }
+
+    pub fn set_current_photo_path(&self, photo_path: String) {
+        let imp = self.imp();
+        *imp.current_photo_path.borrow_mut() = Some(photo_path);
+    }
+
+    pub fn get_current_tags(&self) -> Vec<String> {
+        let imp = self.imp();
+        let mut tags = Vec::new();
+        
+        // Get tags from UI chips
+        let mut child = imp.tag_chip_box.first_child();
+        while let Some(widget) = child {
+            if let Some(chip) = widget.downcast_ref::<gtk::Box>() {
+                if let Some(label) = chip.first_child().and_downcast::<gtk::Label>() {
+                    let tag_text = label.text();
+                    tags.push(tag_text.to_string());
+                }
+            }
+            child = widget.next_sibling();
+        }
+        
+        tags
+    }
+
     pub fn add_tag_chip(&self, tag: &str) {
         let imp = self.imp();
         let chip = gtk::Box::new(gtk::Orientation::Horizontal, 2);
@@ -153,7 +182,7 @@ impl Sidebar {
         label.add_css_class("tag-label");
         
         // Basit renk seçimi
-        let color = Self::get_tag_color(tag);
+        let _color = Self::get_tag_color(tag);
         label.set_margin_top(2);
         label.set_margin_bottom(2);
         label.set_margin_start(4);
