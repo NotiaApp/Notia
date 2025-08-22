@@ -1,34 +1,13 @@
-/* application.rs
- *
- * Copyright 2025 Unknown
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
+// application.rs
 use gettextrs::gettext;
 use adw::prelude::*;
 use adw::subclass::prelude::*;
 use gtk::{gio, glib};
-
 use crate::config::VERSION;
 use crate::NotiaWindow;
 
 mod imp {
     use super::*;
-
     #[derive(Debug, Default)]
     pub struct NotiaApplication {}
 
@@ -45,23 +24,17 @@ mod imp {
             let obj = self.obj();
             obj.setup_gactions();
             obj.set_accels_for_action("app.quit", &["<primary>q"]);
+            obj.set_accels_for_action("app.refresh", &["<primary>r"]);
         }
     }
 
     impl ApplicationImpl for NotiaApplication {
-        // We connect to the activate callback to create a window when the application
-        // has been launched. Additionally, this callback notifies us when the user
-        // tries to launch a "second instance" of the application. When they try
-        // to do that, we'll just present any existing window.
         fn activate(&self) {
             let application = self.obj();
-            // Get the current window or create one if necessary
             let window = application.active_window().unwrap_or_else(|| {
                 let window = NotiaWindow::new(&*application);
                 window.upcast()
             });
-
-            // Ask the window manager/compositor to present the window
             window.present();
         }
     }
@@ -89,25 +62,46 @@ impl NotiaApplication {
         let quit_action = gio::ActionEntry::builder("quit")
             .activate(move |app: &Self, _, _| app.quit())
             .build();
+
         let about_action = gio::ActionEntry::builder("about")
             .activate(move |app: &Self, _, _| app.show_about())
             .build();
-        self.add_action_entries([quit_action, about_action]);
+
+        let refresh_action = gio::ActionEntry::builder("refresh")
+            .activate(move |app: &Self, _, _| {
+                if let Some(window) = app.active_window() {
+                    if let Some(notia_window) = window.downcast_ref::<NotiaWindow>() {
+                        notia_window.load_photos();
+                    }
+                }
+            })
+            .build();
+
+        let clear_notes_action = gio::ActionEntry::builder("clear_notes")
+            .activate(move |app: &Self, _, _| {
+                if let Some(window) = app.active_window() {
+                    if let Some(notia_window) = window.downcast_ref::<NotiaWindow>() {
+                        notia_window.clear_all_notes();
+                    }
+                }
+            })
+            .build();
+
+        self.add_action_entries([quit_action, about_action, refresh_action, clear_notes_action]);
     }
 
     fn show_about(&self) {
         let window = self.active_window().unwrap();
         let about = adw::AboutDialog::builder()
-            .application_name("notia")
+            .application_name("Notia")
             .application_icon("com.vastsea.notia")
-            .developer_name("Unknown")
+            .developer_name("Notia Team")
             .version(VERSION)
-            .developers(vec!["Unknown"])
-            // Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
+            .developers(vec!["Notia Team"])
             .translator_credits(&gettext("translator-credits"))
-            .copyright("© 2025 Unknown")
+            .copyright("© 2025 Notia Team")
+            .website("https://github.com/yourusername/notia")
             .build();
-
         about.present(Some(&window));
     }
 }
