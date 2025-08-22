@@ -2,6 +2,7 @@
 use gtk::prelude::*;
 use adw::subclass::prelude::*;
 use gtk::{gio, glib};
+use gettextrs::gettext;
 use crate::photo_manager::PhotoManager;
 use crate::sidebar::Sidebar;
 
@@ -268,9 +269,9 @@ impl NotiaWindow {
             if let Some(sidebar) = imp.sidebar.borrow().as_ref() {
                 sidebar.update_sidebar(crate::sidebar::SidebarData {
                     photo_path: None,
-                    photo_name: Some("No photos available".to_string()),
+                    photo_name: Some(gettext("No photos available")),
                     note_text: Some("".to_string()),
-                    note_status: Some("No photos to add notes to".to_string()),
+                    note_status: Some(gettext("No photos to add notes to")),
                     tags: None,
                 });
             }
@@ -289,16 +290,16 @@ impl NotiaWindow {
         let photo_name = std::path::Path::new(&photo_path)
             .file_name()
             .and_then(|name| name.to_str())
-            .unwrap_or("Unknown File")
+            .unwrap_or(&gettext("Unknown File"))
             .to_string();
         
         // Get note info
         let (note_text, note_status) = {
             let manager = imp.photo_manager.borrow();
             if let Some(note) = manager.get_note(&photo_path) {
-                (note.note.clone(), format!("Note: {}", note.timestamp))
+                (note.note.clone(), format!("{}: {}", gettext("Note"), note.timestamp))
             } else {
-                (String::new(), "No note added yet".to_string())
+                (String::new(), gettext("No note added yet"))
             }
         };
         
@@ -364,7 +365,7 @@ impl NotiaWindow {
         }
         
         // Show toast
-        let toast = adw::Toast::new("Note saved successfully");
+        let toast = adw::Toast::new(&gettext("Note saved successfully"));
         imp.toast_overlay.add_toast(toast);
     }
     
@@ -397,7 +398,7 @@ impl NotiaWindow {
         self.update_current_photo();
         
         // Show toast
-        let toast = adw::Toast::new("Note cleared");
+        let toast = adw::Toast::new(&gettext("Note cleared"));
         imp.toast_overlay.add_toast(toast);
     }
 
@@ -416,7 +417,7 @@ impl NotiaWindow {
         self.update_current_photo();
         
         // Show toast
-        let toast = adw::Toast::new("All notes cleared");
+        let toast = adw::Toast::new(&gettext("All notes cleared"));
         imp.toast_overlay.add_toast(toast);
     }
 }
