@@ -1,0 +1,107 @@
+# English translations for PACKAGE package.
+# Copyright (C) 2025 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#  <vastseaoffical0@outlook.com>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-22 23:20+0300\n"
+"PO-Revision-Date: 2025-08-22 23:20+0300\n"
+"Last-Translator:  <vastseaoffical0@outlook.com>\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: data/com.vastsea.notia.desktop.in:2 data/com.vastsea.notia.metainfo.xml.in:7
+msgid "Notia"
+msgstr "Notia"
+
+#: data/com.vastsea.notia.desktop.in:8
+msgid "GTK;"
+msgstr "GTK;"
+
+#: data/com.vastsea.notia.metainfo.xml.in:8
+msgid "Keep the summary shorter, between 10 and 35 characters"
+msgstr "Keep the summary shorter, between 10 and 35 characters"
+
+#: data/com.vastsea.notia.metainfo.xml.in:10
+msgid "No description"
+msgstr "No description"
+
+#: data/com.vastsea.notia.metainfo.xml.in:14
+msgid "Developer name"
+msgstr "Developer name"
+
+#: data/com.vastsea.notia.metainfo.xml.in:52
+#: data/com.vastsea.notia.metainfo.xml.in:56
+msgid "A caption"
+msgstr "A caption"
+
+#: src/application.rs:101
+msgid "translator-credits"
+msgstr "translator-credits"
+
+#: src/window.ui:6
+msgid "Notia - Fotoğraf Galerisi"
+msgstr "Notia - Fotoğraf Galerisi"
+
+#: src/window.ui:27
+msgid "Kenar Çubuğunu Göster/Gizle"
+msgstr "Kenar Çubuğunu Göster/Gizle"
+
+#: src/window.ui:38
+msgid "Yenile"
+msgstr "Yenile"
+
+#: src/window.ui:50
+msgid "Ana Menü"
+msgstr "Ana Menü"
+
+#: src/window.ui:82
+msgid "Fotoğraf Galerisi"
+msgstr "Fotoğraf Galerisi"
+
+#: src/window.ui:83
+msgid "Fotoğrafları görüntülemek için tıklayın"
+msgstr "Fotoğrafları görüntülemek için tıklayın"
+
+#: src/window.ui:116
+msgid "Önceki Fotoğraf"
+msgstr "Önceki Fotoğraf"
+
+#: src/window.ui:138
+msgid "Sonraki Fotoğraf"
+msgstr "Sonraki Fotoğraf"
+
+#: src/window.ui:169
+msgid "_Yenile"
+msgstr "_Yenile"
+
+#: src/window.ui:174
+msgid "_Tüm Notları Temizle"
+msgstr "_Tüm Notları Temizle"
+
+#: src/window.ui:181
+msgid "_Klavye Kısayolları"
+msgstr "_Klavye Kısayolları"
+
+#: src/window.ui:186
+msgid "_Hakkında"
+msgstr "_Hakkında"
+
+#: src/window.ui:191
+msgid "_Çıkış"
+msgstr "_Çıkış"
+
+#: src/sidebar.ui:13
+msgid "Fotoğraf Notları"
+msgstr "Fotoğraf Notları"
+
+#: src/sidebar.ui:14
+msgid "Seçili fotoğrafa not ekleyin"
+msgstr "Seçili fotoğrafa not ekleyin"

@@ -3,4 +3,10 @@
 data/com.vastsea.notia.desktop.in
 data/com.vastsea.notia.metainfo.xml.in
 data/com.vastsea.notia.gschema.xml
+src/application.rs
+src/main.rs
+src/photo_manager.rs
+src/sidebar.rs
+src/window.rs
 src/window.ui
+src/sidebar.ui
