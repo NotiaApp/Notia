@@ -9,50 +9,54 @@ pub struct SidebarData {
     pub note_status: Option<String>,
 }
 
-#[derive(Debug, CompositeTemplate)]
-#[template(resource = "/com/vastsea/notia/sidebar.ui")]
-pub struct Sidebar {
-    #[template_child]
-    pub selected_photo_preview: TemplateChild<gtk::Picture>,
-    #[template_child]
-    pub photo_label: TemplateChild<gtk::Label>,
-    #[template_child]
-    pub note_label: TemplateChild<gtk::Label>,
-    #[template_child]
-    pub note_text_view: TemplateChild<gtk::TextView>,
-    #[template_child]
-    pub clear_note_button: TemplateChild<gtk::Button>,
-    #[template_child]
-    pub save_note_button: TemplateChild<gtk::Button>,
-    #[template_child]
-    pub tag_chip_box: TemplateChild<gtk::Box>,
-    #[template_child]
-    pub tag_entry: TemplateChild<gtk::Entry>,
-    #[template_child]
-    pub add_tag_button: TemplateChild<gtk::Button>,
-}
+mod imp {
+    use super::*;
 
-#[glib::object_subclass]
-impl ObjectSubclass for Sidebar {
-    const NAME: &'static str = "Sidebar";
-    type Type = super::Sidebar;
-    type ParentType = gtk::Revealer;
-
-    fn class_init(klass: &mut Self::Class) {
-        klass.bind_template();
+    #[derive(Debug, Default, CompositeTemplate)]
+    #[template(resource = "/com/vastsea/notia/sidebar.ui")]
+    pub struct Sidebar {
+        #[template_child]
+        pub selected_photo_preview: TemplateChild<gtk::Picture>,
+        #[template_child]
+        pub photo_label: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub note_label: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub note_text_view: TemplateChild<gtk::TextView>,
+        #[template_child]
+        pub clear_note_button: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub save_note_button: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub tag_chip_box: TemplateChild<gtk::Box>,
+        #[template_child]
+        pub tag_entry: TemplateChild<gtk::Entry>,
+        #[template_child]
+        pub add_tag_button: TemplateChild<gtk::Button>,
     }
 
-    fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
-        obj.init_template();
-    }
-}
+    #[glib::object_subclass]
+    impl ObjectSubclass for Sidebar {
+        const NAME: &'static str = "Sidebar";
+        type Type = super::Sidebar;
+        type ParentType = gtk::Box;
 
-impl ObjectImpl for Sidebar {}
-impl WidgetImpl for Sidebar {}
-impl RevealerImpl for Sidebar {}
+        fn class_init(klass: &mut Self::Class) {
+            klass.bind_template();
+        }
+
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
+            obj.init_template();
+        }
+    }
+
+    impl ObjectImpl for Sidebar {}
+    impl WidgetImpl for Sidebar {}
+    impl BoxImpl for Sidebar {}
+}
 
 glib::wrapper! {
-    pub struct Sidebar(ObjectSubclass<Sidebar>) @extends gtk::Widget, gtk::Revealer;
+    pub struct Sidebar(ObjectSubclass<imp::Sidebar>) @extends gtk::Widget, gtk::Box;
 }
 
 impl Sidebar {
@@ -113,17 +117,10 @@ impl Sidebar {
         let add_btn = imp.add_tag_button.clone();
         let sidebar = self.clone();
         add_btn.connect_clicked(move |_| {
-            if let Some(text) = entry.text().as_str().strip_prefix(' ') {
-                if !text.trim().is_empty() {
-                    sidebar.add_tag_chip(text.trim());
-                    entry.set_text("");
-                }
-            } else {
-                let text = entry.text().to_string();
-                if !text.trim().is_empty() {
-                    sidebar.add_tag_chip(text.trim());
-                    entry.set_text("");
-                }
+            let text = entry.text().to_string();
+            if !text.trim().is_empty() {
+                sidebar.add_tag_chip(text.trim());
+                entry.set_text("");
             }
         });
     }
@@ -131,43 +128,43 @@ impl Sidebar {
     pub fn add_tag_chip(&self, tag: &str) {
         let imp = self.imp();
         let chip = gtk::Box::new(gtk::Orientation::Horizontal, 2);
-        chip.set_widget_name("tag_chip");
+        chip.add_css_class("tag-chip");
+        
         let label = gtk::Label::new(Some(tag));
         label.add_css_class("tag-label");
-        // Renkli chip için rastgele bir renk seç
-        use gtk::gdk::RGBA;
-        let color = RGBA::parse(&Self::random_color()).unwrap_or(RGBA::RED);
-        let style = format!("background-color: {}; color: white; border-radius: 8px; padding: 2px 8px; margin: 2px;", color.to_string());
-        label.set_css_classes(&["tag-label"]);
-        label.set_style_context(&gtk::StyleContext::new());
-        label.set_widget_name("tag_label");
+        
+        // Basit renk seçimi
+        let color = Self::get_tag_color(tag);
         label.set_margin_top(2);
         label.set_margin_bottom(2);
         label.set_margin_start(4);
         label.set_margin_end(4);
+        
         // Silme butonu
         let del_btn = gtk::Button::from_icon_name("window-close-symbolic");
-        del_btn.set_widget_name("tag_delete_btn");
-        del_btn.set_relief(gtk::ReliefStyle::None);
+        del_btn.add_css_class("tag-delete-btn");
         del_btn.set_focusable(false);
+        
         let chip_clone = chip.clone();
         del_btn.connect_clicked(move |_| {
-            chip_clone.set_parent(None::<&gtk::Widget>);
+            chip_clone.unparent();
         });
+        
         chip.append(&label);
         chip.append(&del_btn);
         imp.tag_chip_box.append(&chip);
     }
 
-    fn random_color() -> String {
-        // Basit pastel renkler
+    fn get_tag_color(tag: &str) -> String {
+        // Basit hash-based renk seçimi
         let colors = [
             "#FFB300", "#803E75", "#FF6800", "#A6BDD7", "#C10020", "#CEA262", "#817066",
             "#007D34", "#F6768E", "#00538A", "#FF7A5C", "#53377A", "#FF8E00", "#B32851",
             "#F4C800", "#7F180D", "#93AA00", "#593315", "#F13A13", "#232C16"
         ];
-        use rand::seq::SliceRandom;
-        let mut rng = rand::thread_rng();
-        colors.choose(&mut rng).unwrap_or(&"#FFB300").to_string()
+        
+        let hash = tag.chars().map(|c| c as u32).sum::<u32>();
+        let index = (hash % colors.len() as u32) as usize;
+        colors[index].to_string()
     }
 }

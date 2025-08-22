@@ -149,7 +149,11 @@
                 
                 <!-- Kenar Çubuğu -->
                 <child>
-                  <object class="Sidebar" id="sidebar_revealer"/>
+                  <object class="GtkRevealer" id="sidebar_revealer">
+                    <property name="transition-type">slide-left</property>
+                    <property name="transition-duration">300</property>
+                    <property name="reveal-child">True</property>
+                  </object>
                 </child>
               </object>
             </property>

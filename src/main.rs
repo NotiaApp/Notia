@@ -2,9 +2,11 @@
 mod application;
 mod config;
 mod window;
+mod sidebar;
 mod photo_manager;
 use self::application::NotiaApplication;
 use self::window::NotiaWindow;
+use self::sidebar::Sidebar;
 use config::{GETTEXT_PACKAGE, LOCALEDIR, PKGDATADIR};
 use gettextrs::{bind_textdomain_codeset, bindtextdomain, textdomain};
 use gtk::{gio, glib};
@@ -21,7 +23,12 @@ fn main() -> glib::ExitCode {
     textdomain(GETTEXT_PACKAGE).expect("Unable to switch to the text domain");
     
     // Load resources
-    let resources = gio::Resource::load(PKGDATADIR.to_owned() + "/notia.gresource")
+    let resource_path = if std::path::Path::new("build/src/notia.gresource").exists() {
+        "build/src/notia.gresource".to_string()
+    } else {
+        PKGDATADIR.to_owned() + "/notia.gresource"
+    };
+    let resources = gio::Resource::load(resource_path)
         .expect("Could not load resources");
     gio::resources_register(&resources);
     

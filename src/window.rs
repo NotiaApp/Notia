@@ -3,6 +3,7 @@ use gtk::prelude::*;
 use adw::subclass::prelude::*;
 use gtk::{gio, glib};
 use crate::photo_manager::PhotoManager;
+use crate::sidebar::Sidebar;
 
 mod imp {
     use super::*;
@@ -26,23 +27,12 @@ mod imp {
         #[template_child]
         pub next_button: TemplateChild<gtk::Button>,
         #[template_child]
-        pub selected_photo_preview: TemplateChild<gtk::Picture>,
-        #[template_child]
-        pub photo_label: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub note_label: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub note_text_view: TemplateChild<gtk::TextView>,
-        #[template_child]
-        pub clear_note_button: TemplateChild<gtk::Button>,
-        #[template_child]
-        pub save_note_button: TemplateChild<gtk::Button>,
-        #[template_child]
         pub sidebar_revealer: TemplateChild<gtk::Revealer>,
         
         pub photo_manager: Rc<RefCell<PhotoManager>>,
         pub current_photo_index: RefCell<usize>,
         pub gallery_model: RefCell<gio::ListStore>,
+        pub sidebar: RefCell<Option<Sidebar>>,
     }
 
      impl Default for NotiaWindow {
@@ -54,16 +44,11 @@ mod imp {
                 prev_button: TemplateChild::default(),
                 photo_counter: TemplateChild::default(),
                 next_button: TemplateChild::default(),
-                selected_photo_preview: TemplateChild::default(),
-                photo_label: TemplateChild::default(),
-                note_label: TemplateChild::default(),
-                note_text_view: TemplateChild::default(),
-                clear_note_button: TemplateChild::default(),
-                save_note_button: TemplateChild::default(),
                 sidebar_revealer: TemplateChild::default(),
                 photo_manager: Rc::new(RefCell::new(PhotoManager::new())),
                 current_photo_index: RefCell::new(0),
                 gallery_model: RefCell::new(gio::ListStore::new::<gio::File>()),
+                sidebar: RefCell::new(None),
             }
         }
     }
@@ -113,6 +98,12 @@ impl NotiaWindow {
     fn setup_callbacks(&self) {
         let imp = self.imp();
         
+        // Initialize sidebar
+        let sidebar = Sidebar::new();
+        sidebar.setup_tag_feature();
+        imp.sidebar_revealer.set_child(Some(&sidebar));
+        *imp.sidebar.borrow_mut() = Some(sidebar.clone());
+        
         // Gallery grid selection
         imp.gallery_grid.connect_activate(glib::clone!(
             #[weak(rename_to = window)]
@@ -153,21 +144,21 @@ impl NotiaWindow {
         ));
         
         // Note buttons
-        imp.save_note_button.connect_clicked(glib::clone!(
-            #[weak(rename_to = window)]
-            self,
-            move |_| {
-                window.save_current_note();
-            }
-        ));
+        // imp.save_note_button.connect_clicked(glib::clone!(
+        //     #[weak(rename_to = window)]
+        //     self,
+        //     move |_| {
+        //         window.save_current_note();
+        //     }
+        // ));
         
-        imp.clear_note_button.connect_clicked(glib::clone!(
-            #[weak(rename_to = window)]
-            self,
-            move |_| {
-                window.clear_current_note();
-            }
-        ));
+        // imp.clear_note_button.connect_clicked(glib::clone!(
+        //     #[weak(rename_to = window)]
+        //     self,
+        //     move |_| {
+        //         window.clear_current_note();
+        //     }
+        // ));
     }
 
     pub fn load_photos(&self) {
@@ -257,10 +248,10 @@ impl NotiaWindow {
         let count = imp.gallery_model.borrow().n_items();
         
         if count == 0 {
-            imp.photo_label.set_text("No photos available");
-            imp.note_label.set_text("No photos to add notes to");
+            // imp.photo_label.set_text("No photos available");
+            // imp.note_label.set_text("No photos to add notes to");
             imp.photo_counter.set_text("0 / 0");
-            imp.selected_photo_preview.set_paintable(None::<&gtk::gdk::Paintable>);
+            // imp.selected_photo_preview.set_paintable(None::<&gtk::gdk::Paintable>);
             return;
         }
         
@@ -273,7 +264,7 @@ impl NotiaWindow {
         imp.photo_counter.set_text(&format!("{} / {}", current_index + 1, count));
         
         // Update photo preview
-        imp.selected_photo_preview.set_file(Some(&file));
+        // imp.selected_photo_preview.set_file(Some(&file));
         
         // Get photo name
         let photo_name = std::path::Path::new(&photo_path)
@@ -293,11 +284,11 @@ impl NotiaWindow {
         };
         
         // Update UI
-        imp.photo_label.set_text(&photo_name);
-        imp.note_label.set_text(&note_status);
+        // imp.photo_label.set_text(&photo_name);
+        // imp.note_label.set_text(&note_status);
         
-        let buffer = imp.note_text_view.buffer();
-        buffer.set_text(&note_text);
+        // let buffer = imp.note_text_view.buffer();
+        // buffer.set_text(&note_text);
         
         // Update navigation button states
         imp.prev_button.set_sensitive(current_index > 0);
@@ -319,15 +310,15 @@ impl NotiaWindow {
         let photo_path = file.path().unwrap_or_default().to_string_lossy().to_string();
         
         // Get note text
-        let buffer = imp.note_text_view.buffer();
-        let (start, end) = buffer.bounds();
-        let note_text = buffer.text(&start, &end, false);
+        // let buffer = imp.note_text_view.buffer();
+        // let (start, end) = buffer.bounds();
+        // let note_text = buffer.text(&start, &end, false);
         
         // Save note
-        if !note_text.trim().is_empty() {
-            let mut manager = imp.photo_manager.borrow_mut();
-            manager.add_note(&photo_path, note_text.to_string());
-        }
+        // if !note_text.trim().is_empty() {
+        //     let mut manager = imp.photo_manager.borrow_mut();
+        //     manager.add_note(&photo_path, note_text.to_string());
+        // }
         
         // Update UI
         self.update_current_photo();
@@ -358,8 +349,8 @@ impl NotiaWindow {
         } // borrow burada biter
         
         // Clear text view
-        let buffer = imp.note_text_view.buffer();
-        buffer.set_text("");
+        // let buffer = imp.note_text_view.buffer();
+        // buffer.set_text("");
         
         // Update UI
         self.update_current_photo();
@@ -375,11 +366,11 @@ impl NotiaWindow {
         manager.clear_notes();
         
         // Clear text view if it contains a note for the current photo
-        let buffer = imp.note_text_view.buffer();
-        let (start, end) = buffer.bounds();
-        if !buffer.text(&start, &end, false).is_empty() {
-            buffer.set_text("");
-        }
+        // let buffer = imp.note_text_view.buffer();
+        // let (start, end) = buffer.bounds();
+        // if !buffer.text(&start, &end, false).is_empty() {
+        //     buffer.set_text("");
+        // }
         
         self.update_current_photo();
         

@@ -1,1 +1,25 @@
-
+/* Tag chipleri için stil */
+.tag-chip {
+    border-radius: 8px;
+    background: #A6BDD7;
+    padding: 2px 8px;
+    margin: 2px 2px 2px 0;
+    color: white;
+    font-weight: 500;
+    min-width: 32px;
+    min-height: 24px;
+}
+.tag-label {
+    color: white;
+    font-weight: 500;
+    padding-right: 4px;
+}
+.tag-delete-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    min-width: 16px;
+    min-height: 16px;
+    margin-left: 2px;
+    padding: 0;
+}
